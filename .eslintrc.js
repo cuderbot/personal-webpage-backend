@@ -8,7 +8,7 @@ module.exports = {
   ignorePatterns: ['.eslintrc.js'],
   extends: ['plugin:prettier/recommended'],
   parserOptions: {
-    ecmaVersion: 7,
+    ecmaVersion: 8,
     sourceType: 'module',
   },
   rules: {
