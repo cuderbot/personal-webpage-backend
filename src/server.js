@@ -5,23 +5,19 @@ const cors = require('cors');
 
 require('dotenv/config');
 
-const router = require('./router');
+const router = require('./routes');
 const middlewares = require('./middlewares');
 
 const app = express();
+
+module.exports = app;
 
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', router);
-
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
-app.listen(process.env.PORT, process.env.HOST, () => {
-  console.log(
-    `🚀 APP running on http://${process.env.HOST}:${process.env.PORT}`,
-  );
-});
+app.use('/api', router);
