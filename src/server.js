@@ -2,7 +2,6 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const pathfinderUI = require('pathfinder-ui');
 
 require('dotenv/config');
 
