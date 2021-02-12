@@ -19,9 +19,13 @@ router.get('/', (req, res, next) => {
 
 // Get user by _id
 router.get('/:id', (req, res, next) => {
-  res.json({
-    message: 'GET a user by _id',
-  });
+  try {
+    res.json({
+      message: 'GET a user by _id',
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Create a new user
