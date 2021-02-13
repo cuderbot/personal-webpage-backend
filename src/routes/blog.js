@@ -1,23 +1,21 @@
 const { Router } = require('express');
 
-const schema = require('./user.validator');
-
 const router = Router();
 
 module.exports = router;
 
-// Get all users
+// Get all blog posts
 router.get('/', (req, res, next) => {
   try {
     res.json({
-      message: 'GET a All users',
+      message: 'GET all blog posts',
     });
   } catch (error) {
     next(error);
   }
 });
 
-// Get user by _id
+// Get a post by _id or slag
 router.get('/:id', (req, res, next) => {
   try {
     res.json({
@@ -28,33 +26,33 @@ router.get('/:id', (req, res, next) => {
   }
 });
 
-// Create a new user
+// Create a new blog post
 router.post('/', (req, res, next) => {
   try {
     res.json({
-      message: 'CREATE a user',
+      message: 'CREATE a blog post',
     });
   } catch (error) {
     next(error);
   }
 });
 
-// Update a user
+// Update a blog post
 router.put('/:id', (req, res, next) => {
   try {
     res.json({
-      message: 'UPDATE a user',
+      message: 'UPDATE a blog post',
     });
   } catch (error) {
     next(error);
   }
 });
 
-// Delete a user
+// Delete a blog post
 router.delete('/:id', (req, res, next) => {
   try {
     res.json({
-      message: 'DELETE a user',
+      message: 'DELETE a blog post',
     });
   } catch (error) {
     next(error);
