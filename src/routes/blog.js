@@ -17,9 +17,13 @@ router.get('/', (req, res, next) => {
 
 // Get a post by _id or slag
 router.get('/:id', (req, res, next) => {
-  res.json({
-    message: 'GET a blog post by _id',
-  });
+  try {
+    res.json({
+      message: 'GET a user by _id',
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Create a new blog post
