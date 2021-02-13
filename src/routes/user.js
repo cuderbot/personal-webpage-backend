@@ -1,38 +1,42 @@
 const { Router } = require('express');
 
 const { userValidator } = require('../validators');
+const { userCollection } = require('../models');
 
 const router = Router();
 
 module.exports = router;
 
 // Get all users
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    res.json({
-      message: 'GET a All users',
-    });
+    const users = await userCollection.find();
+    res.json({ data: users });
   } catch (error) {
     next(error);
   }
 });
 
 // Get user by _id
-router.get('/:id', (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    res.json({
-      message: 'GET a user by _id',
-    });
+    const { id } = req.params;
+    const user = await userCollection.findOne({ _id: id });
+    console.log(user);
+    if (!user) return next();
+    return res.json({ data: user });
   } catch (error) {
     next(error);
   }
 });
 
 // Create a new user
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
+    await userValidator.validateAsync(req.body);
+    const userCreated = await userCollection.insert(req.body);
     res.json({
-      message: 'CREATE a user',
+      data: userCreated,
     });
   } catch (error) {
     next(error);
@@ -40,10 +44,16 @@ router.post('/', (req, res, next) => {
 });
 
 // Update a user
-router.put('/:id', (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
+    const { id } = req.params;
+    await userValidator.validateAsync(req.body);
+    const userUpdated = await userCollection.findOneAndUpdate(
+      { _id: id },
+      req.body,
+    );
     res.json({
-      message: 'UPDATE a user',
+      data: userUpdated,
     });
   } catch (error) {
     next(error);
@@ -51,10 +61,13 @@ router.put('/:id', (req, res, next) => {
 });
 
 // Delete a user
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   try {
+    const { id } = req.params;
+    const userDeleted = await userCollection.findOneAndDelete({ _id: id });
     res.json({
       message: 'DELETE a user',
+      data: userDeleted,
     });
   } catch (error) {
     next(error);
