@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
 const { Router } = require('express');
 
-const { userValidator } = require('../validators');
+const {
+  userValidator: { createUserValidator, updateUserValidator },
+} = require('../validators');
 const { userCollection } = require('../models');
 
 const router = Router();
@@ -35,7 +37,7 @@ router.get('/:id', async (req, res, next) => {
 // Create a new user
 router.post('/', async (req, res, next) => {
   try {
-    const value = await userValidator.validateAsync(req.body);
+    const value = await createUserValidator.validateAsync(req.body);
     const salt = await bcrypt.genSalt(10);
     value.password = await bcrypt.hash(value.password, salt);
     const userCreated = await userCollection.insert(value);
@@ -50,7 +52,12 @@ router.post('/', async (req, res, next) => {
 // Update a user
 router.put('/:id', async (req, res, next) => {
   try {
-    const value = await userValidator.validateAsync(req.body);
+    const value = await updateUserValidator.validateAsync(req.body);
+    if (value.password) {
+      const salt = await bcrypt.genSalt(10);
+      value.password = await bcrypt.hash(value.password, salt);
+    }
+
     const userUpdated = await userCollection.findOneAndUpdate(
       { _id: req.params.id },
       { $set: value },
