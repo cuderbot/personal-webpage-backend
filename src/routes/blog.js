@@ -1,14 +1,18 @@
 const { Router } = require('express');
 
+const { blogCollection } = require('../models');
+const { blogValidator } = require('../validators');
+
 const router = Router();
 
 module.exports = router;
 
 // Get all blog posts
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
+    const posts = await blogCollection.find();
     res.json({
-      message: 'GET all blog posts',
+      data: posts,
     });
   } catch (error) {
     next(error);
@@ -16,10 +20,11 @@ router.get('/', (req, res, next) => {
 });
 
 // Get a post by _id or slag
-router.get('/:id', (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
+    const post = await blogCollection.findOne({ _id: req.params.id });
     res.json({
-      message: 'GET a user by _id',
+      data: post,
     });
   } catch (error) {
     next(error);
@@ -27,10 +32,12 @@ router.get('/:id', (req, res, next) => {
 });
 
 // Create a new blog post
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
+    const value = await blogValidator.validateAsync(req.body);
+    const postCreated = await blogCollection.insert(value);
     res.json({
-      message: 'CREATE a blog post',
+      data: postCreated,
     });
   } catch (error) {
     next(error);
@@ -38,10 +45,15 @@ router.post('/', (req, res, next) => {
 });
 
 // Update a blog post
-router.put('/:id', (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
+    const value = await blogValidator.validateAsync(req.body);
+    const postUpdated = await blogCollection.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: value },
+    );
     res.json({
-      message: 'UPDATE a blog post',
+      data: postUpdated,
     });
   } catch (error) {
     next(error);
@@ -49,10 +61,13 @@ router.put('/:id', (req, res, next) => {
 });
 
 // Delete a blog post
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   try {
+    const postDeleted = await blogCollection.findOneAndRemove({
+      _id: req.params.id,
+    });
     res.json({
-      message: 'DELETE a blog post',
+      message: postDeleted,
     });
   } catch (error) {
     next(error);
