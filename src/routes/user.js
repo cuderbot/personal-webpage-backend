@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { Router } = require('express');
 
 const { userValidator } = require('../validators');
@@ -35,6 +36,8 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const value = await userValidator.validateAsync(req.body);
+    const salt = await bcrypt.genSalt(10);
+    value.password = await bcrypt.hash(value.password, salt);
     const userCreated = await userCollection.insert(value);
     res.json({
       data: userCreated,
@@ -63,7 +66,9 @@ router.put('/:id', async (req, res, next) => {
 // Delete a user
 router.delete('/:id', async (req, res, next) => {
   try {
-    const userDeleted = await userCollection.findOneAndDelete({ _id: req.params.id });
+    const userDeleted = await userCollection.findOneAndDelete({
+      _id: req.params.id,
+    });
     res.json({
       data: userDeleted,
     });
