@@ -20,8 +20,7 @@ router.get('/', async (req, res, next) => {
 // Get user by _id
 router.get('/:id', async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const user = await userCollection.findOne({ _id: id });
+    const user = await userCollection.findOne({ _id: req.params.id });
     if (!user) {
       return next();
     } else {
@@ -48,11 +47,10 @@ router.post('/', async (req, res, next) => {
 // Update a user
 router.put('/:id', async (req, res, next) => {
   try {
-    const { id } = req.params;
     const value = await userValidator.validateAsync(req.body);
     const userUpdated = await userCollection.findOneAndUpdate(
-      { _id: id },
-      value,
+      { _id: req.params.id },
+      { $set: value },
     );
     res.json({
       data: userUpdated,
@@ -65,8 +63,7 @@ router.put('/:id', async (req, res, next) => {
 // Delete a user
 router.delete('/:id', async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const userDeleted = await userCollection.findOneAndDelete({ _id: id });
+    const userDeleted = await userCollection.findOneAndDelete({ _id: req.params.id });
     res.json({
       data: userDeleted,
     });

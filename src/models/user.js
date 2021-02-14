@@ -1,6 +1,6 @@
 const { db } = require('../services');
 
-const collection = db.get('users');
+const collection = db.get('user');
 
 collection.createIndex('email', { unique: true });
 
