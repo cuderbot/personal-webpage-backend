@@ -2,6 +2,7 @@ const { Router } = require('express');
 
 const { blogCollection } = require('../models');
 const { blogValidator } = require('../validators');
+const { slugify } = require('../utils');
 
 const router = Router();
 
@@ -34,7 +35,10 @@ router.get('/:id', async (req, res, next) => {
 // Create a new blog post
 router.post('/', async (req, res, next) => {
   try {
-    const value = await blogValidator.validateAsync(req.body);
+    const validate = req.body;
+    validate.slug = req.body.title ? slugify(req.body.title) : '';
+
+    const value = await blogValidator.validateAsync(validate);
     const postCreated = await blogCollection.insert(value);
     res.json({
       data: postCreated,
@@ -47,7 +51,10 @@ router.post('/', async (req, res, next) => {
 // Update a blog post
 router.put('/:id', async (req, res, next) => {
   try {
-    const value = await blogValidator.validateAsync(req.body);
+    const validate = req.body;
+    validate.slug = req.body.title ? slugify(req.body.title) : '';
+
+    const value = await blogValidator.validateAsync(validate);
     const postUpdated = await blogCollection.findOneAndUpdate(
       { _id: req.params.id },
       { $set: value },
