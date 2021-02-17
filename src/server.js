@@ -23,4 +23,5 @@ app.use(express.json());
 app.use('/api', router);
 
 app.use(middlewares.notFound);
+app.use(middlewares.errorMongoose);
 app.use(middlewares.errorHandler);
