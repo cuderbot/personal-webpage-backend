@@ -46,6 +46,9 @@
       "yarn jest --bail --coverage --findRelatedTests"
     ]
   },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
