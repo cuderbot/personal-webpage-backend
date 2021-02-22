@@ -17,7 +17,7 @@
     "start": "node .",
     "dev": "nodemon .",
     "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
+    "lint:fix": "yarn lint --fix",
     "format": "prettier --write \"src/**/*.js\"  \"test/**/*.js\"",
     "test": "jest",
     "test:watch": "jest --watch"
