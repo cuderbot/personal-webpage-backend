@@ -22,6 +22,30 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "jest": {
+    "moduleFileExtensions": ["js"],
+    "rootDir": "test/unit",
+    "testRegex": ".*\\.(spec|test)\\.js$",
+    "collectCoverageFrom": ["**/*.js"],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js}": [
+      "eslint --fix",
+      "yarn jest --bail --coverage --findRelatedTests"
+    ]
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
