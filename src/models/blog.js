@@ -1,8 +1,36 @@
-const { db } = require('../services');
+const mongoose = require('mongoose');
 
-const collection = db.get('blog');
+const Blog = new mongoose.Schema(
+  {
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'author',
+      required: [true, 'Add an author to the post'],
+    },
+    title: {
+      type: String,
+      index: true,
+      unique: true,
+      required: [true, 'Add a title to the post'],
+    },
+    content: {
+      type: String,
+    },
+    categories: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'category',
+      required: true,
+    },
+    slug: {
+      type: String,
+      index: true,
+      unique: true,
+    },
+    tags: {
+      type: [String],
+    },
+  },
+  { timestamps: true },
+);
 
-collection.createIndex('title', { unique: true });
-collection.createIndex('slug', { unique: true });
-
-module.exports = collection;
+module.exports = mongoose.model('blog', Blog);

@@ -1,7 +1,11 @@
-const userCollection = require('./user');
-const blogCollection = require('./blog');
+const authorModel = require('./author');
+const blogModel = require('./blog');
+const categoryModel = require('./category');
+const userModel = require('./user');
 
 module.exports = {
-  userCollection,
-  blogCollection,
+  authorModel,
+  blogModel,
+  categoryModel,
+  userModel,
 };

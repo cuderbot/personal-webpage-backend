@@ -29,8 +29,12 @@
       "node": true,
       "jest": true
     },
-    "ignorePatterns": [".eslintrc.js"],
-    "extends": ["plugin:prettier/recommended"],
+    "ignorePatterns": [
+      ".eslintrc.js"
+    ],
+    "extends": [
+      "plugin:prettier/recommended"
+    ],
     "parserOptions": {
       "ecmaVersion": 8,
       "sourceType": "module"
@@ -45,10 +49,14 @@
     "trailingComma": "all"
   },
   "jest": {
-    "moduleFileExtensions": ["js"],
+    "moduleFileExtensions": [
+      "js"
+    ],
     "rootDir": "test/unit",
     "testRegex": ".*\\.(spec|test)\\.js$",
-    "collectCoverageFrom": ["**/*.js"],
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
@@ -65,7 +73,9 @@
     ]
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -77,7 +87,7 @@
     "ip": "^1.1.5",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
-    "monk": "^7.3.3",
+    "mongoose": "^5.11.17",
     "morgan": "^1.10.0",
     "winston": "^3.3.3"
   },

@@ -2,8 +2,11 @@ const joi = require('joi');
 
 const createUserValidator = joi.object({
   email: joi.string().email().required(),
-  name: joi.string().trim().required(),
-  lastName: joi.string().trim().required(),
+  author: joi.object({
+    name: joi.string().trim().lowercase().required(),
+    lastName: joi.string().trim().lowercase().required(),
+    bio: joi.string().trim(),
+  }),
   password: joi.string().trim().required(),
   repeatPassword: joi.ref('password'),
 });
@@ -11,8 +14,10 @@ const createUserValidator = joi.object({
 const updateUserValidator = joi
   .object({
     email: joi.string().email(),
-    name: joi.string().trim(),
-    lastName: joi.string().trim(),
+    author: joi.object({
+      name: joi.string().trim().lowercase(),
+      lastName: joi.string().trim().lowercase(),
+    }),
     password: joi.string().trim(),
     repeatPassword: joi.ref('password'),
   })

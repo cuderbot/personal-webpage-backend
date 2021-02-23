@@ -1,19 +1,16 @@
-const bcrypt = require('bcryptjs');
 const { Router } = require('express');
 
 const {
   userValidator: { createUserValidator, updateUserValidator },
 } = require('../validators');
-const { userCollection } = require('../models');
+const { userService } = require('../services');
 
 const router = Router();
-
-module.exports = router;
 
 // Get all users
 router.get('/', async (req, res, next) => {
   try {
-    const users = await userCollection.find();
+    const users = await userService.findAll();
     res.json({ data: users });
   } catch (error) {
     next(error);
@@ -23,7 +20,7 @@ router.get('/', async (req, res, next) => {
 // Get user by _id
 router.get('/:id', async (req, res, next) => {
   try {
-    const user = await userCollection.findOne({ _id: req.params.id });
+    const user = await userService.findOne({ _id: req.params.id });
     if (!user) {
       return next();
     } else {
@@ -37,10 +34,10 @@ router.get('/:id', async (req, res, next) => {
 // Create a new user
 router.post('/', async (req, res, next) => {
   try {
-    const value = await createUserValidator.validateAsync(req.body);
-    const salt = await bcrypt.genSalt(10);
-    value.password = await bcrypt.hash(value.password, salt);
-    const userCreated = await userCollection.insert(value);
+    const userDTO = req.body;
+    const value = await createUserValidator.validateAsync(userDTO);
+    const userCreated = await userService.create(value);
+
     res.json({
       data: userCreated,
     });
@@ -52,16 +49,10 @@ router.post('/', async (req, res, next) => {
 // Update a user
 router.put('/:id', async (req, res, next) => {
   try {
-    const value = await updateUserValidator.validateAsync(req.body);
-    if (value.password) {
-      const salt = await bcrypt.genSalt(10);
-      value.password = await bcrypt.hash(value.password, salt);
-    }
+    const userDTO = req.body;
+    const value = await updateUserValidator.validateAsync(userDTO);
+    const userUpdated = await userService.update(value);
 
-    const userUpdated = await userCollection.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: value },
-    );
     res.json({
       data: userUpdated,
     });
@@ -83,3 +74,5 @@ router.delete('/:id', async (req, res, next) => {
     next(error);
   }
 });
+
+module.exports = router;
