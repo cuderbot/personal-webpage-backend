@@ -7,6 +7,8 @@ const { userService } = require('../services');
 
 const router = Router();
 
+module.exports = router;
+
 // Get all users
 router.get('/', async (req, res, next) => {
   try {
@@ -20,7 +22,8 @@ router.get('/', async (req, res, next) => {
 // Get user by _id
 router.get('/:id', async (req, res, next) => {
   try {
-    const user = await userService.findOne({ _id: req.params.id });
+    const id = req.params.id;
+    const user = await userService.findById(id);
     if (!user) {
       return next();
     } else {
@@ -75,4 +78,3 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 
-module.exports = router;

@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 
 const { userModel } = require('../models');
 
-exports.findOne = (id) => userModel.findOne({ _id: id }).populate().exec();
+exports.findById = (id) => userModel.findById(id).populate().exec();
 
 exports.findAll = () => userModel.find().populate().exec();
 
