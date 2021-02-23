@@ -1,11 +1,25 @@
-const app = require('./server');
-const ip = require('ip');
+/* eslint-disable no-console */
+const { app } = require('./server');
+const { bootstrapLoader } = require('./loaders');
+const config = require('./config');
 
-const { PORT, HOST } = process.env;
-const host = HOST || ip.address();
-const port = PORT || 3000;
+async function bootstrap() {
+  await bootstrapLoader();
 
-app.listen(port, host, () => {
-  // eslint-disable-next-line no-console
-  console.log(`🚀 APP running on http://${host}:${port}`);
-});
+  const { host, port } = config.server;
+
+  app
+    .listen(port, host, () => {
+      console.log(`🚀 APP running on http://${host}:${port}`);
+    })
+    .on('close', () => {
+      console.log(`👋 succesfully closing app`);
+    })
+    .on('error', (err) => {
+      console.error(`❌ error has occurred :(`);
+      console.error(config.env === 'development' ? err.stack : '🥞');
+      process.exit(1);
+    });
+}
+
+bootstrap();

@@ -3,14 +3,12 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 
-require('dotenv/config');
-
 const router = require('./routes');
 const middlewares = require('./middlewares');
 
 const app = express();
 
-module.exports = app;
+exports.app = app;
 
 app.use(morgan('dev'));
 app.use(helmet());
